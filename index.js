@@ -1,4 +1,11 @@
-const { ApolloServer, gql } = require('apollo-server');
+const express = require('express');
+const mongoose = require('mongoose');
+const { ApolloServer, gql } = require('apollo-server-express');
+
+// const { Food } = require('./models/food');
+const Food = require('./models/food');
+
+require('dotenv').config();
 
 const typeDefs = gql`
   type Food {
@@ -14,6 +21,7 @@ const typeDefs = gql`
 
   type Query {
     foods: [Food]
+    foodDB: [Food]
   }
 `;
 
@@ -33,12 +41,26 @@ const foods = [
 const resolvers = {
   Query: {
     foods: () => foods,
+    foodDB: () => Food.find(),
   },
 };
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+const server = async () => {
+  const app = express();
 
-server.listen(5000).then(() => console.log('server listening on 5000'));
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
+
+  server.applyMiddleware({ app });
+
+  await mongoose.connect(
+    `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds253537.mlab.com:53537/guilty-eater`,
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  );
+
+  app.listen(5000, () => console.log('listening on 5000'));
+};
+
+server();
