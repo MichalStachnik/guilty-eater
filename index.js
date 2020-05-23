@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { ApolloServer, gql } = require('apollo-server-express');
 
-// const { Food } = require('./models/food');
 const Food = require('./models/food');
 
 require('dotenv').config();
