@@ -72,7 +72,7 @@ const resolvers = {
   },
 };
 
-const server = async () => {
+const startServer = async () => {
   const app = express();
 
   const server = new ApolloServer({
@@ -90,4 +90,4 @@ const server = async () => {
   app.listen(5000, () => console.log('listening on 5000'));
 };
 
-server();
+startServer();
