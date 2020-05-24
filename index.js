@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const typeDefs = gql`
   type Food {
+    id: ID!
     type: String
     landUseChange: Float
     animalFeed: Float
@@ -20,27 +21,54 @@ const typeDefs = gql`
 
   type Query {
     foods: [Food]
-    foodDB: [Food]
+  }
+
+  type Mutation {
+    createFood(
+      type: String!
+      landUseChange: Float!
+      animalFeed: Float!
+      farm: Float!
+      processing: Float!
+      transport: Float!
+      packaging: Float!
+      retail: Float!
+    ): Food
   }
 `;
 
-const foods = [
-  {
-    type: 'Wheat & Rye (Bread)',
-    landUseChange: 0.1,
-    animalFeed: 0.0,
-    farm: 0.8,
-    processing: 0.2,
-    transport: 0.1,
-    packaging: 0.1,
-    retail: 0.1,
-  },
-];
-
 const resolvers = {
   Query: {
-    foods: () => foods,
-    foodDB: () => Food.find(),
+    foods: () => Food.find(),
+  },
+
+  Mutation: {
+    createFood: async (
+      _,
+      {
+        type,
+        landUseChange,
+        animalFeed,
+        farm,
+        processing,
+        transport,
+        packaging,
+        retail,
+      }
+    ) => {
+      const newFood = new Food({
+        type,
+        landUseChange,
+        animalFeed,
+        farm,
+        processing,
+        transport,
+        packaging,
+        retail,
+      });
+
+      return newFood.save();
+    },
   },
 };
 
