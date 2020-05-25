@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const { ApolloServer, gql } = require('apollo-server-express');
 
 const Food = require('./models/food');
@@ -74,6 +75,8 @@ const resolvers = {
 
 const startServer = async () => {
   const app = express();
+
+  app.use(cors());
 
   const server = new ApolloServer({
     typeDefs,

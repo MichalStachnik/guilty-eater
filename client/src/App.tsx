@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import ApolloClient, { gql } from 'apollo-boost';
+import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 
 import Search from './Components/Search';
 import RecipeList from './Components/RecipeList';
+
+const FOODS = gql`
+  {
+    foods {
+      type
+      landUseChange
+    }
+  }
+`;
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,10 +36,24 @@ const App: React.FC = () => {
     console.log('useEffect ran');
   }, [searchQuery]);
 
+  const { loading, error, data } = useQuery(FOODS);
+
+  console.log('loading ', loading);
+  console.log('error ', error);
+  console.log('data ', data);
+
+  let renderedData;
+
+  if (data && data.foods.length) {
+    renderedData = data.foods.map((food: any, index: number) => {
+      return <p>{food.type}</p>;
+    });
+  }
   return (
     <div>
       <Search handleSearchChange={handleSearchChange} />
       <RecipeList recipes={recipes} />
+      {renderedData}
     </div>
   );
 };
