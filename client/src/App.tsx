@@ -46,7 +46,7 @@ const App: React.FC = () => {
 
   if (data && data.foods.length) {
     renderedData = data.foods.map((food: any, index: number) => {
-      return <p>{food.type}</p>;
+      return <p key={index}>{food.type}</p>;
     });
   }
   return (

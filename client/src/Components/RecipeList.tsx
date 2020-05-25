@@ -1,4 +1,5 @@
 import React from 'react';
+import RecipeItem from './RecipeItem';
 
 interface Props {
   recipes: any[];
@@ -10,12 +11,7 @@ const RecipeList: React.FC<Props> = ({ recipes }) => {
     <div>
       <ul>
         {recipes.map((recipe, index) => {
-          return (
-            <li key={index}>
-              <h1>{recipe.recipe.label}</h1>
-              <img src={recipe.recipe.image} />
-            </li>
-          );
+          return <RecipeItem recipe={recipe.recipe} key={index} />;
         })}
       </ul>
     </div>
