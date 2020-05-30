@@ -21,8 +21,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      env: 
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASS: ${{ secrets.DB_PASS }}
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
       - run: npm run build --if-present
       - run: npm test
